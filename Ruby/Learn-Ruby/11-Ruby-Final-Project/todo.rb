@@ -19,16 +19,15 @@ User Story 10: As a user I can toggle a status as complete or incomplete.
 module Menu
 
     def menu
-        " Welcome to the TodoList Program!
-        This menu will help you use the Task List System
-        1) Add
-        2) Show
-        3) Update
-        4) Delete
-        5) Write to File
-        6) Read from File
-        7) Toggle Status
-        Q) Quit "
+    puts "Please choose from the following list",
+        "1) Add",
+        "2) Show",
+        "3) Update",
+        "4) Delete",
+        "5) Write to File",
+        "6) Read from File",
+        "7) Toggle Status",
+        "Q) Quit"
       end
 
     def show
@@ -61,8 +60,12 @@ class List
     end
 
     def show
+        if all_tasks.length > 0
         all_tasks.map.with_index { |t, i| "(#{i.next}): #{t.to_s}"}
-      end
+        else
+        "Task List System is empty"
+        end  
+    end
 
     def delete(task_number)
     all_tasks.delete_at(task_number - 1)
@@ -132,7 +135,8 @@ if __FILE__ == $PROGRAM_NAME
     include Menu
     include Promptable
     my_list = List.new
-    puts 'Please choose from the following list'
+    puts 'Welcome to the TodoList Program!',
+    "This menu will help you use the Task List System"
       until ['q'].include?(user_input = prompt(show).downcase)
       case user_input
         when '1'
@@ -149,7 +153,7 @@ if __FILE__ == $PROGRAM_NAME
         when '5'
           my_list.write_to_file(prompt('What is the filename to write to?'))
         when '6'
-            puts "Saved files:", "\n", Dir.glob("*"), "\n"
+            puts "Saved files:", "\n", Dir.glob("*").reject { |i| i == "todo.rb" }, "\n"
           begin
             my_list.read_from_file(prompt('Which file would you like to read?'))
           rescue Errno::ENOENT
